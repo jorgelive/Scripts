@@ -59,11 +59,11 @@ class ResumenForYear
 			$fecharetorno=$fecha;
 		}
 		if($tipo=='VDON'||$tipo=='VDRT'||$tipo=='VDGU'){
-			$servicioIda='AV 31';
-			$servicioRetorno='AV 32';
+			$servicioIda='31P';
+			$servicioRetorno='32P';
 		}else{
-			$servicioIda='EX 33';
-			$servicioRetorno='EX 34';
+			$servicioIda='33P';
+			$servicioRetorno='34P';
 		}
 		if($tipo=='VDGU'||$tipo=='EXGU'){
 			$tipoPaxIda='3GI';
@@ -73,8 +73,9 @@ class ResumenForYear
 			$tipoPaxRetorno='3OR';
 		}
 		
-		echo $grupo.';'.$fecha.';'.$servicioIda.';'.$tipoPaxIda.';'.$numero.';'.$fecharetorno.';'.$servicioRetorno.';'.$tipoPaxRetorno.';'.$numero.'<br>';
+		//echo $grupo.';'.$fecha.';'.$servicioIda.';'.$tipoPaxIda.';'.$numero.';'.$fecharetorno.';'.$servicioRetorno.';'.$tipoPaxRetorno.';'.$numero.'<br>';
 		
+		echo $grupo.';'.$fecha.';'.$servicioIda.';'.$numero.';'.$fecharetorno.';'.$servicioRetorno.';'.$numero.'<br>';		
 	}
 }
 $list = file("requerimiento2014.csv");
