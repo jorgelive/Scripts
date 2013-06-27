@@ -3,11 +3,7 @@
 class ResumenForYear
 {
     private $items;
-<<<<<<< HEAD
-	private $grupos=array(1=>"JAA",2=>"PON",3=>"OGG",4=>"JIAN",5=>"GHIIS",6=>"CHIAC",7=>"NII",8=>"QECHCAN",9=>"FAIG",10=>"SACHE",11=>"NECH",12=>"SHI");
-=======
 	private $grupos=array(1=>"YIYUE",2=>"ARYUE",3=>"SANYUE",4=>"SEYUE",5=>"BUYUE",6=>"LIUYUE",7=>"CHIYUE",8=>"PAYUE",9=>"ECHIOYUE",10=>"SHEYUE",11=>"SHEYIYUE",12=>"SHEARYUE");
->>>>>>> ad3feb1cf5d0ccc1ad8e6e5251f967b50d40c667
 	
 	public function __construct($list) {
 		$this->make($list);
@@ -63,11 +59,11 @@ class ResumenForYear
 			$fecharetorno=$fecha;
 		}
 		if($tipo=='VDON'||$tipo=='VDRT'||$tipo=='VDGU'){
-			$servicioIda='AV 31';
-			$servicioRetorno='AV 32';
+			$servicioIda='31P';
+			$servicioRetorno='32P';
 		}else{
-			$servicioIda='EX 33';
-			$servicioRetorno='EX 34';
+			$servicioIda='33P';
+			$servicioRetorno='34P';
 		}
 		if($tipo=='VDGU'||$tipo=='EXGU'){
 			$tipoPaxIda='3GI';
@@ -77,13 +73,10 @@ class ResumenForYear
 			$tipoPaxRetorno='3OR';
 		}
 		
-		echo $grupo.';'.$fecha.';'.$servicioIda.';'.$tipoPaxIda.';'.$numero.';'.$fecharetorno.';'.$servicioRetorno.';'.$tipoPaxRetorno.';'.$numero.'<br>';
+		//echo $grupo.';'.$fecha.';'.$servicioIda.';'.$tipoPaxIda.';'.$numero.';'.$fecharetorno.';'.$servicioRetorno.';'.$tipoPaxRetorno.';'.$numero.'<br>';
 		
+		echo $grupo.';'.$fecha.';'.$servicioIda.';'.$numero.';'.$fecharetorno.';'.$servicioRetorno.';'.$numero.'<br>';		
 	}
 }
-<<<<<<< HEAD
-$list = file("requerimiento2013.csv");
-=======
 $list = file("requerimiento2014.csv");
->>>>>>> ad3feb1cf5d0ccc1ad8e6e5251f967b50d40c667
 $items = new ResumenForYear($list);
