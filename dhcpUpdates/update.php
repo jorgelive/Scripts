@@ -37,7 +37,11 @@ class actualizacion
         $this->enviado['accion']=$enviado[0];
         $this->enviado['ip']=$enviado[1];
         $this->enviado['nombre']=preg_replace('/\s+/', '', $enviado[2]);
-        $this->enviado['mac']=$enviado[3];
+        $macArray=explode(':',$enviado[3]);
+        foreach ($macArray as $macComponente):
+            $macProcesado[]=str_pad($macComponente,2, 0, STR_PAD_LEFT);
+        endforeach;
+        $this->enviado['mac']=implode(':',$macProcesado);
         $this->conexion['servidor']=Configuracion::leer('conexion.servidor');
         $this->conexion['base']=Configuracion::leer('conexion.base');
         $this->conexion['usuario']=Configuracion::leer('conexion.usuario');
