@@ -20,9 +20,9 @@ Configuracion::escribir('conexion.servidor', 'wpad.vipac.com');
 Configuracion::escribir('conexion.base', 'infraestructura');
 Configuracion::escribir('conexion.usuario', 'vipacuser');
 Configuracion::escribir('conexion.contra', 'welcom3');
-Configuracion::escribir('dhcp.log', '/Volumes/Archivo/Desarrollo/Web/Scripts/dhcpUpdates/actualizacionLog.log');
-//Configuracion::escribir('dhcp.log', '/etc/dhcp/actualizacionLog.log');
-Configuracion::escribir('dhcp.servidor', 'vipacfs2');
+//Configuracion::escribir('dhcp.log', '/Volumes/Archivo/Desarrollo/Web/Scripts/dhcpUpdates/actualizacionLog.log');
+Configuracion::escribir('dhcp.log', '/etc/dhcp/actualizacionDHCP.log');
+Configuracion::escribir('dhcp.servidor', 'vipacfs3');
 Configuracion::escribir('dhcp.dominio', 'vipac.com');
 
 class actualizacion
@@ -36,7 +36,7 @@ class actualizacion
         $enviado=explode('|', $enviado);
         $this->enviado['accion']=$enviado[0];
         $this->enviado['ip']=$enviado[1];
-        $this->enviado['nombre']=$enviado[2];
+        $this->enviado['nombre']=preg_replace('/\s+/', '', $enviado[2]);
         $this->enviado['mac']=$enviado[3];
         $this->conexion['servidor']=Configuracion::leer('conexion.servidor');
         $this->conexion['base']=Configuracion::leer('conexion.base');
@@ -63,7 +63,7 @@ class actualizacion
         }
         return $q;
     }
-    
+
     private function obtenerPtr($ip){
         $ip=explode('.',$ip);
         $ip=array_reverse($ip);
@@ -79,7 +79,7 @@ class actualizacion
         endforeach;
         return $result;
     }
-    
+
     private function obtenerA($nombre){
         $dnss=dns_get_record($nombre.'.'.$this->dhcp['dominio'], DNS_A);
         $result=array();
@@ -101,86 +101,114 @@ class actualizacion
         }else{
             file_put_contents($this->dhcp['log'], "No existe registro para la interface en la base de datos\n", FILE_APPEND | LOCK_EX);
         }
-		 $otro=$this->query("SELECT mac,nombre,ip FROM dhcp WHERE mac <> :mac AND nombre = :nombre" ,array(':mac'=>$this->enviado['mac'],':nombre'=>$this->enviado['nombre']),'u');
+        $otro=$this->query("SELECT mac,nombre,ip FROM dhcp WHERE mac <> :mac AND nombre = :nombre" ,array(':mac'=>$this->enviado['mac'],':nombre'=>$this->enviado['nombre']),'u');
         if (!empty($otro)){
             file_put_contents($this->dhcp['log'], 'En base de datos, de otra interface: '.implode('|',$otro)."\n", FILE_APPEND | LOCK_EX);
         }else{
             file_put_contents($this->dhcp['log'], "No existe registro para otra interface en la base de datos\n", FILE_APPEND | LOCK_EX);
         }
         if(empty($almacenado)){
-            $insert=$this->query("INSERT INTO dhcp (mac, nombre, ip) VALUES (:mac,:nombre,:ip)", array(':mac'=>$this->enviado['mac'],':nombre'=>$this->enviado['nombre'],':ip'=>$this->enviado['ip']));
+            $this->query("INSERT INTO dhcp (mac, nombre, ip) VALUES (:mac,:nombre,:ip)", array(':mac'=>$this->enviado['mac'],':nombre'=>$this->enviado['nombre'],':ip'=>$this->enviado['ip']));
         }elseif($almacenado['ip']!=$this->enviado['ip']||$almacenado['nombre']!=$this->enviado['nombre']){
-			 $update=$this->query("UPDATE dhcp SET nombre=:nombre, ip=:ip WHERE mac=:mac", array(':mac'=>$this->enviado['mac'],':nombre'=>$this->enviado['nombre'],':ip'=>$this->enviado['ip']));
+            $this->query("UPDATE dhcp SET nombre=:nombre, ip=:ip WHERE mac=:mac", array(':mac'=>$this->enviado['mac'],':nombre'=>$this->enviado['nombre'],':ip'=>$this->enviado['ip']));
         }
-        
+
         if(!empty($almacenado)){ // modificacion o eliminacion
             if($almacenado['ip']!=$this->enviado['ip']||$almacenado['nombre']!=$this->enviado['nombre']){
                 $a=$this->obtenerA($almacenado['nombre']);
+                $coleccionIp[]=$almacenado['ip'];
                 foreach ($a as $proceso):
                     if($proceso['ip']!=$otro['ip']){
                         $this->escribirRegistroA('delete',$proceso['nombre'],$proceso['ip']);
+                        file_put_contents($this->dhcp['log'], "Se agrega: ".$proceso['ip']." a la búsqueda PTR\n", FILE_APPEND | LOCK_EX);
+                        $coleccionIp[]=$proceso['ip'];
                     }else{
-                        file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);    
+                        file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
+                        file_put_contents($this->dhcp['log'], "No se adiciona: ".$proceso['ip']." a la búsqueda PTR, pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
+
                     }
                 endforeach;
-                $ptr=$this->obtenerPtr($almacenado['ip']);
-                foreach ($ptr as $proceso):
-                    $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
+
+                foreach($coleccionIp as $ip):
+                    $ptr=$this->obtenerPtr($ip);
+                    foreach ($ptr as $proceso):
+                        $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
+                    endforeach;
                 endforeach;
+
+
                 $this->escribirRegistroA('add',$this->enviado['nombre'].'.'.$this->dhcp['dominio'],$this->enviado['ip']);
                 $this->escribirRegistroPTR('add',$this->enviado['nombre'].'.'.$this->dhcp['dominio'],$this->enviado['ip']);
             }
             else{
                 if ($this->enviado['accion']=='delete'){
                     $a=$this->obtenerA($this->enviado['nombre']);
+                    $coleccionIp[]=$this->enviado['ip'];
                     foreach ($a as $proceso):
                         if($proceso['ip']!=$otro['ip']){
                             $this->escribirRegistroA('delete',$proceso['nombre'],$proceso['ip']);
+                            file_put_contents($this->dhcp['log'], "Se agrega: ".$proceso['ip']." a la búsqueda PTR\n", FILE_APPEND | LOCK_EX);
+                            $coleccionIp[]=$proceso['ip'];
                         }else{
                             file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
+                            file_put_contents($this->dhcp['log'], "No se adiciona: ".$proceso['ip']." a la búsqueda PTR, pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
                         }
+
                     endforeach;
-                    $ptr=$this->obtenerPtr($this->enviado['ip']);
-                    foreach ($ptr as $proceso):
-                        $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
+                    foreach($coleccionIp as $ip):
+                        $ptr=$this->obtenerPtr($ip);
+                        foreach ($ptr as $proceso):
+                            $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
+                        endforeach;
                     endforeach;
-                       
+
                 }else{
                     file_put_contents($this->dhcp['log'], "Nada que hacer, no cambio la información\n", FILE_APPEND | LOCK_EX);
                 }
             }
         }else{// agregado o eliminacion o no existente en la base de datos
             $a=$this->obtenerA($this->enviado['nombre']);
+            $coleccionIp[]=$this->enviado['ip'];
             $aExiste=false;
             $ptrExiste=false;
             foreach ($a as $proceso):
                 if($proceso['ip']==$this->enviado['ip']&&$proceso['nombre']==$this->enviado['nombre'].'.'.$this->dhcp['dominio']&&$this->enviado['accion']!='delete'){
-                    $aExiste=true;    
+                    $aExiste=true;
                 }else{
                     if($proceso['ip']!=$otro['ip']){
                         $this->escribirRegistroA('delete',$proceso['nombre'],$proceso['ip']);
-                    }{
-                        file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);    
+                        file_put_contents($this->dhcp['log'], "Se agrega: ".$proceso['ip']." a la búsqueda PTR\n", FILE_APPEND | LOCK_EX);
+                        $coleccionIp[]=$proceso['ip'];
+
+                    }else{
+                        file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
+                        file_put_contents($this->dhcp['log'], "No se adiciona a la búsqueda PTR, pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
                     }
                 }
             endforeach;
-            $ptr=$this->obtenerPtr($this->enviado['ip']);
-            foreach ($ptr as $proceso):
-                if($proceso['ip']==$this->enviado['ip']&&$proceso['nombre']==$this->enviado['nombre'].'.'.$this->dhcp['dominio']&&$this->enviado['accion']!='delete'){
-                    $ptrExiste=true;    
-                }else{
-                    $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
-                }
+            foreach ($coleccionIp as $ip):
+                $ptr=$this->obtenerPtr($ip);
+                foreach ($ptr as $proceso):
+                    if($proceso['ip']==$this->enviado['ip']&&$proceso['nombre']==$this->enviado['nombre'].'.'.$this->dhcp['dominio']&&$this->enviado['accion']!='delete'){
+                        $ptrExiste=true;
+                    }else{
+                        $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
+                    }
+                endforeach;
             endforeach;
-            
+
             if($aExiste===false&&$this->enviado['accion']!='delete'){
                 $this->escribirRegistroA('add',$this->enviado['nombre'].'.'.$this->dhcp['dominio'],$this->enviado['ip']);
+            }else{
+                file_put_contents($this->dhcp['log'], "No se agrega, el registro A ya existe, o se esta en eliminación\n", FILE_APPEND | LOCK_EX);
             }
-            
+
             if($ptrExiste===false&&$this->enviado['accion']!='delete'){
                 $this->escribirRegistroPTR('add',$this->enviado['nombre'].'.'.$this->dhcp['dominio'],$this->enviado['ip']);
+            }else{
+                file_put_contents($this->dhcp['log'], "No se agrega, el registro PTR ya existe, o se esta en eliminación\n", FILE_APPEND | LOCK_EX);
             }
-        }      
+        }
         if($this->enviado['accion']=='delete'){
             $this->query("DELETE FROM dhcp WHERE mac=:mac", array(':mac'=>$this->enviado['mac']));
         }
@@ -219,14 +247,13 @@ class actualizacion
         } else {
             file_put_contents($this->dhcp['log'], "Error de Ejecución\n", FILE_APPEND | LOCK_EX);
         }
-        
-        
+
+
 
     }
 }
 
-
-
-
-$actualizacion = new actualizacion('add|10.10.12.80|jgomez-mp1|gs:33:ss:ss');
-$actualizacion->procesar();
+if (!empty($argv[1])){
+    $actualizacion = new actualizacion($argv[1]);
+    $actualizacion->procesar();
+}
