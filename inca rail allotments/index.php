@@ -1,6 +1,5 @@
 <?php
-$archivo = "fincarail2013.csv";
-
+$archivo = "fincarail2014.csv";
 function trenes($tren){
 	$valor['41']='I41';
 	$valor['43']='I43';
@@ -20,24 +19,24 @@ $lines = file($archivo);
 foreach ($lines as $key => $line):
 	$item=explode(';',$line);
 	$newitems[$key]['codigo']=trim($item[0]);
-	$newitems[$key]['fecha']=trim($item[4]);
+	$newitems[$key]['fecha']=trim($item[3]);
 	
-	if(abs((int)$item[6])>=abs((int)$item[11])){
-		$newitems[$key]['numero']=$item[11];
+	if(abs((int)$item[5])>=abs((int)$item[10])){
+		$newitems[$key]['numero']=$item[10];
 	}else{
-		$newitems[$key]['numero']=$item[6];		
+		$newitems[$key]['numero']=$item[5];
 	}
-	$newitems[$key]['trenIda']=trenes(trim($item[2]));
-	$newitems[$key]['estacionIda']=explode(' - ',$item[3]);
+	$newitems[$key]['trenIda']=trenes(trim($item[1]));
+	$newitems[$key]['estacionIda']=explode(' - ',$item[2]);
 	$newitems[$key]['estacionIda']=estaciones(trim($newitems[$key]['estacionIda'][0]));
-	$newitems[$key]['trenRetorno']=trenes(trim($item[7]));
-	$newitems[$key]['estacionRetorno']=explode(' - ',$item[8]);
+	$newitems[$key]['trenRetorno']=trenes(trim($item[6]));
+	$newitems[$key]['estacionRetorno']=explode(' - ',$item[7]);
 	$newitems[$key]['estacionRetorno']=estaciones(trim($newitems[$key]['estacionRetorno'][1]));
 
-	$newitems[$key]['servicioIda']=trim($item[5]);	
-	$newitems[$key]['servicioRetorno']=trim($item[10]);
+	$newitems[$key]['servicioIda']=trim($item[4]);
+	$newitems[$key]['servicioRetorno']=trim($item[9]);
 endforeach;
-$correlativo=3772;
+$correlativo=4919;
 foreach($newitems as $item):
 	//$item['numero']=8;//para separar
 	$correlativochar=str_pad($correlativo,7, 0, STR_PAD_LEFT); 
@@ -46,7 +45,7 @@ foreach($newitems as $item):
 	if(isset($item['numeroguia'])){$numeroguia=$item['numeroguia'];}else{$numeroguia=0;}
 		
 	echo 'INSERT INTO BLOQUEO_TREN (NUM_BLOQUEO,ANO,FEC_SALIDA,COD_SERVICIO_SALIDA, COD_ESTACION_SALIDA,FEC_RETORNO,COD_SERVICIO_RETORNO,COD_ESTACION_RETORNO,CANTIDAD,SALDO_CANTIDAD,CANTIDAD_GUIA,SALDO_CANTIDAD_GUIA,OBSERVACIONES,ESTADO,USER_CREACION,FEC_CREACION)';
-	echo "VALUES ('".$correlativochar."','2013',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numero'].",".$item['numero'].",0,0,'".$item['codigo']." - Inca Rail - ".$item['servicioIda']." / ".$item['servicioRetorno']."',1,'JGOMEZ',to_date('".date('Y-m-d')."', 'yyyy-mm-dd'));<br />";
+	echo "VALUES ('".$correlativochar."','2014',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numero'].",".$item['numero'].",0,0,'".$item['codigo']." - Inca Rail - ".$item['servicioIda']." / ".$item['servicioRetorno']."',1,'JGOMEZ',to_date('".date('Y-m-d')."', 'yyyy-mm-dd'));<br />";
 
 endforeach;
 

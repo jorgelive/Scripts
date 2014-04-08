@@ -1,0 +1,218 @@
+Nada que hacerNada que hacerNada que hacer
+Nada que hacer
+Nada que hacer
+Nada que hacer
+Nada que hacer
+Nada que hacer
+
+------------------Comenzando proceso----------------
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07Comenzando proceso----------------
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07Comenzando proceso----------------
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:24:40 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:25:55 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:26:38 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.81
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com vipac.com jgomez-mp1 A 127.0.0.1 -k yes
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+
+------------------2014-04-07 19:26:52 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:28:09 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+
+------------------2014-04-07 19:28:16 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:28:43 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:30:11 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.82
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com vipac.com jgomez-mp1 A 127.0.0.1 -k yes
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+
+------------------2014-04-07 19:30:18 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+
+------------------2014-04-07 19:33:55 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer
+------------------2014-04-07 19:33:56 Fin de proceso----------------
+
+------------------2014-04-07 19:40:37 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer, no cambio la información
+------------------2014-04-07 19:40:38 Fin de proceso----------------
+
+------------------2014-04-07 19:52:14 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer, no cambio la información
+------------------2014-04-07 19:52:14 Fin de proceso----------------
+
+------------------2014-04-07 19:52:24 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer, no cambio la información
+------------------2014-04-07 19:52:25 Fin de proceso----------------
+
+------------------2014-04-07 19:52:40 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+------------------2014-04-07 19:52:41 Fin de proceso----------------
+
+------------------2014-04-07 19:53:38 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer, no cambio la información
+------------------2014-04-07 19:53:38 Fin de proceso----------------
+
+------------------2014-04-07 19:53:51 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+Error de Ejecución
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+Error de Ejecución
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+Error de Ejecución
+------------------2014-04-07 19:53:52 Fin de proceso----------------
+
+------------------2014-04-07 19:54:29 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+Error de Ejecución
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+Error de Ejecución
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+Error de Ejecución
+------------------2014-04-07 19:54:29 Fin de proceso----------------
+
+------------------2014-04-07 19:54:32 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer, no cambio la información
+------------------2014-04-07 19:54:32 Fin de proceso----------------
+
+------------------2014-04-07 19:54:46 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+samba-tool dns delete vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+Error de Ejecución
+samba-tool dns add vipacfs2.vipac.com vipac.com jgomez-mp1 A 10.10.12.80 -k yes
+Error de Ejecución
+samba-tool dns add vipacfs2.vipac.com 12.10.10.in-addr.arpa 80 PTR jgomez-mp1.vipac.com -k yes
+Error de Ejecución
+------------------2014-04-07 19:54:46 Fin de proceso----------------
+
+------------------2014-04-07 19:54:57 Comenzando proceso----------------
+Enviado: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+La accion es: add
+En base de datos: gs:33:ss:ss|jgomez-mp1|10.10.12.80
+En base de datos, de otra interface: gs:33:ss:s2|jgomez-mp1|10.10.10.11
+Nada que hacer, no cambio la información
+------------------2014-04-07 19:54:58 Fin de proceso----------------
