@@ -120,6 +120,9 @@ class actualizacion
         if(!empty($almacenado)){ // modificacion o eliminacion
             if($almacenado['ip']!=$this->enviado['ip']||$almacenado['nombre']!=$this->enviado['nombre']){
                 $a=$this->obtenerA($almacenado['nombre']);
+                if(empty($a)){
+                    file_put_contents($this->dhcp['log'], "No existe registro A asociado a la interface\n", FILE_APPEND | LOCK_EX);
+                }
                 $coleccionIp[]=$almacenado['ip'];
                 foreach ($a as $proceso):
                     if($proceso['ip']!=$otro['ip']){
@@ -132,9 +135,14 @@ class actualizacion
 
                     }
                 endforeach;
-
+                if(empty($coleccionIp)){
+                    file_put_contents($this->dhcp['log'], "No existen IP para realizar la busqueda reversa\n", FILE_APPEND | LOCK_EX);
+                }
                 foreach($coleccionIp as $ip):
                     $ptr=$this->obtenerPtr($ip);
+                    if(empty($ptr)){
+                        file_put_contents($this->dhcp['log'], "No existe registro PTR asociado a la IP:".$ip."\n", FILE_APPEND | LOCK_EX);
+                    }
                     foreach ($ptr as $proceso):
                         $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
                     endforeach;
