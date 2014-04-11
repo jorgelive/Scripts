@@ -165,7 +165,6 @@ class actualizacion
                             file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
                             file_put_contents($this->dhcp['log'], "No se adiciona: ".$proceso['ip']." a la búsqueda PTR, pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
                         }
-
                     endforeach;
                     foreach($coleccionIp as $ip):
                         $ptr=$this->obtenerPtr($ip);
@@ -175,7 +174,13 @@ class actualizacion
                     endforeach;
 
                 }else{
-                    file_put_contents($this->dhcp['log'], "Nada que hacer, no cambio la información\n", FILE_APPEND | LOCK_EX);
+                    $a=$this->obtenerA($almacenado['nombre']);
+                    if(empty($a)){//Previniendo eliminacion automatica
+                        file_put_contents($this->dhcp['log'], "Por algun motivo no existe el registro para: ".$this->enviado['nombre'].", se agregará\n", FILE_APPEND | LOCK_EX);
+                        $this->escribirRegistroA('add',$this->enviado['nombre'].'.'.$this->dhcp['dominio'],$this->enviado['ip']);
+                    }else{
+                        file_put_contents($this->dhcp['log'], "Nada que hacer, no cambio la información\n", FILE_APPEND | LOCK_EX);
+                    }
                 }
             }
         }else{// agregado o eliminacion o no existente en la base de datos
