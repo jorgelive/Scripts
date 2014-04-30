@@ -22,6 +22,7 @@ if (!isset($_POST['nombre'])){
         E-mail: <input type="text" name="email"><br>
         Cargo: <input type="text" name="cargo"><br>
         Anexo: <input type="text" name="anexo"><br>
+        Opcional: <input type="text" name="opcional"><br>
         Oficina: <select name="oficina"><option value="reducto">Reducto</option><option value="lamar">La Mar</option><option value="cusco">Cusco</option><option value="aqp">AQP</option></select><br>
         Idioma: <select name="idioma"><option value="es">Español</option><option value="en">Inglés</option><option value="pt">Portugués</option></select><br><br>
         <input type="submit">
@@ -55,15 +56,9 @@ else{
     $frase['es']="frase_esp.jpg";
     $frase['en']="frase_eng.jpg";
     $frase['pt']="frase_por.jpg";
-    $fraseLink['es']="es/firma.php";
-    $fraseLink['en']="en/";
-    $fraseLink['pt']="es/";
     $publi['es']="publi_esp.png";
     $publi['en']="publi_eng.png";
     $publi['pt']="publi_por.png";
-    $publiLink['es']="index_esp.html";
-    $publiLink['en']="index_eng.html";
-    $publiLink['pt']="index_por.html";
     $siguenos['es']="siguenos.png";
     $siguenos['en']="follow.png";
     $siguenos['pt']="siguenos_por.png";
@@ -94,6 +89,9 @@ else{
 <body class="plomo" >
 <table style="width: 613px;">
     <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
         <td colspan="2">
             <table style="width:100%;">
                 <tr>
@@ -109,13 +107,23 @@ else{
                         </p>
                     </td>
                     <td style="width:342px;">
-                        <p style="font-size:14px; text-align:right; margin-top: 9px; margin-bottom: 10px;">
+                        <p style="font-size:14px; text-align:right; margin-top: 9px; <?php if (!isset($_POST['opcional'])&& empty($_POST['opcional'])){ echo "margin-bottom: 10px;";}?>">
                             T. <?php echo $telefono[$_POST['oficina']];?>  <?php if (isset($_POST['anexo'])&& !empty($_POST['anexo'])){echo "Ext. ".$_POST['anexo'];}?>
                         </p>
 
-                        <p style="font-size:13px; text-align:right; margin-top: 9px;">
+                        <p style="font-size:13px; text-align:right; <?php if (!isset($_POST['opcional'])&& empty($_POST['opcional'])){ echo "margin-bottom: 9px;";}?>">
                             <?php echo $local[$_POST['oficina']];?>
                         </p>
+                        <?php
+                        if (isset($_POST['opcional'])&&!empty($_POST['opcional'])){
+                        ?>
+
+                            <p style="font-size:13px; text-align:right;">
+                                <?php echo $_POST['opcional'];?>
+                            </p>
+                        <?php
+                        }
+                        ?>
                     </td>
                 </tr>
             </table>
@@ -128,7 +136,7 @@ else{
     </tr>
     <tr>
         <td colspan="2">
-            <a href="http://vipac.pe/<?php echo $fraseLink[$_POST['idioma']];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/<?php echo $frase[$_POST['idioma']];?>" style="width:613px; height: 87px;"/></a>
+            <a href="http://vipac.pe/firmas/2014/frase.php?idioma=<?php echo $_POST['idioma'];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/<?php echo $frase[$_POST['idioma']];?>" style="width:613px; height: 87px;"/></a>
         </td>
     </tr>
     <tr>
@@ -158,7 +166,7 @@ else{
             </table>
         </td>
         <td style="width:465px; margin:0px;">
-            <a href="http://vipac.pe/firmas/2014/publi/<?php echo $publiLink[$_POST['idioma']];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/publi/<?php echo $publi[$_POST['idioma']];?>" style="width:465px; height:70px;" /></a>
+            <a href="http://vipac.pe/firmas/2014/publi.php?idioma=<?php echo $_POST['idioma'];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/publi/<?php echo $publi[$_POST['idioma']];?>" style="width:465px; height:70px;" /></a>
         </td>
     </tr>
     <tr>
@@ -200,6 +208,9 @@ else{
 
         <table style="width: 613px;">
             <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
                 <td colspan="2">
                     <table style="width:100%;">
                         <tr>
@@ -215,13 +226,23 @@ else{
                                 </p>
                             </td>
                             <td style="width:342px;">
-                                <p style="font-size:14px; text-align:right; margin-top: 9px; margin-bottom: 10px;">
+                                <p style="font-size:14px; text-align:right; margin-top: 9px; <?php if (!isset($_POST['opcional'])&& empty($_POST['opcional'])){ echo "margin-bottom: 10px;";}?>">
                                     T. <?php echo $telefono[$_POST['oficina']];?>  Ext. <?php echo $_POST['anexo'];?>
                                 </p>
 
-                                <p style="font-size:13px; text-align:right; margin-top: 9px;">
+                                <p style="font-size:13px; text-align:right; <?php if (!isset($_POST['opcional'])&& empty($_POST['opcional'])){ echo "margin-bottom: 9px;";}?>">
                                     <?php echo acentos($local[$_POST['oficina']]);?>
                                 </p>
+                                <?php
+                                    if (isset($_POST['opcional'])&&!empty($_POST['opcional'])){
+                                    ?>
+
+                                    <p style="font-size:13px; text-align:right;">
+                                        <?php echo acentos($_POST['opcional']);?>
+                                    </p>
+                                <?php
+                                }
+                                ?>
                             </td>
                         </tr>
                     </table>
@@ -234,7 +255,7 @@ else{
             </tr>
             <tr>
                 <td colspan="2">
-                    <a href="http://vipac.pe/<?php echo $fraseLink[$_POST['idioma']];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/<?php echo $frase[$_POST['idioma']];?>" style="width:613px; height: 87px;"/></a>
+                    <a href="http://vipac.pe/firmas/2014/frase.php?idioma=<?php echo $_POST['idioma'];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/<?php echo $frase[$_POST['idioma']];?>" style="width:613px; height: 87px;"/></a>
                 </td>
             </tr>
             <tr>
@@ -264,7 +285,7 @@ else{
                     </table>
                 </td>
                 <td style="width:465px; margin:0px;">
-                    <a href="http://vipac.pe/firmas/2014/publi/<?php echo $publiLink[$_POST['idioma']];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/publi/<?php echo $publi[$_POST['idioma']];?>" style="width:465px; height:70px;" /></a>
+                    <a href="http://vipac.pe/firmas/2014/publi.php?idioma=<?php echo $_POST['idioma'];?>" target="_blank"><img src="http://vipac.pe/firmas/2014/publi/<?php echo $publi[$_POST['idioma']];?>" style="width:465px; height:70px;" /></a>
                 </td>
             </tr>
             <tr>
@@ -291,4 +312,5 @@ else{
     unset($_POST['email']);
     unset($_POST['anexo']);
     unset($_POST['cargo']);
+    unset($_POST['opcional']);
 }
