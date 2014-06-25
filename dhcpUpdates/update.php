@@ -1,6 +1,6 @@
 <?php
-
 class Configuracion
+
 {
     static $confArray;
 
@@ -13,7 +13,6 @@ class Configuracion
     {
         self::$confArray[$nombre] = $valor;
     }
-
 }
 
 Configuracion::escribir('conexion.servidor', 'wpad.vipac.com');
@@ -38,6 +37,7 @@ class actualizacion
         $this->enviado['ip']=$enviado[1];
         $this->enviado['nombre']=preg_replace('/\s+/', '', $enviado[2]);
         $macArray=explode(':',$enviado[3]);
+        $macProcesado=array();
         foreach ($macArray as $macComponente):
             $macProcesado[]=str_pad($macComponente,2, 0, STR_PAD_LEFT);
         endforeach;
@@ -95,7 +95,6 @@ class actualizacion
     }
 
     public function procesar(){
-
         file_put_contents($this->dhcp['log'], "\n------------------".date('Y-m-d H:i:s')." Comenzando proceso----------------\n", FILE_APPEND | LOCK_EX);
         file_put_contents($this->dhcp['log'], "Enviado: ".$this->enviado['mac'].'|'.$this->enviado['nombre'].'|'.$this->enviado['ip']."\n", FILE_APPEND | LOCK_EX);
         file_put_contents($this->dhcp['log'], "La accion es: ".$this->enviado['accion']."\n", FILE_APPEND | LOCK_EX);
@@ -128,36 +127,36 @@ class actualizacion
         $aExiste=false;
         $ptrExiste=false;
         foreach ($a as $proceso):
+            file_put_contents($this->dhcp['log'], "ProcesoIP: ".$proceso['ip'].", EnviadoIP:". $this->enviado['ip']."\n", FILE_APPEND | LOCK_EX);
+            file_put_contents($this->dhcp['log'], "ProcesoNombre: ".$proceso['nombre'].", EnviadoNombre:". $this->enviado['nombre'].'.'.$this->dhcp['dominio']."\n", FILE_APPEND | LOCK_EX);
             if($proceso['ip']==$this->enviado['ip']&&$proceso['nombre']==$this->enviado['nombre'].'.'.$this->dhcp['dominio']&&$this->enviado['accion']!='delete'){
                 $aExiste=true;
                 file_put_contents($this->dhcp['log'], "No se borra ni se agrega: ".$proceso['ip'].", del registro A, no cambió la infomación\n", FILE_APPEND | LOCK_EX);
             }else{
-                if(isset($otro)&&$proceso['ip']!=$otro['ip']){
-                    $this->escribirRegistroA('delete',$proceso['nombre'],$proceso['ip']);
-                }else{
+                if(!empty($otro)&&$proceso['ip']==$otro['ip']){
                     file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['ip'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
                     file_put_contents($this->dhcp['log'], "No se adiciona a la búsqueda PTR, pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
+                }else{
+                    $this->escribirRegistroA('delete',$proceso['nombre'],$proceso['ip']);
+                    file_put_contents($this->dhcp['log'], "Se agrega: ".$proceso['ip']." a la búsqueda PTR\n", FILE_APPEND | LOCK_EX);
+                    $coleccionIp[]=$proceso['ip'];
                 }
-                file_put_contents($this->dhcp['log'], "Se agrega: ".$proceso['ip']." a la búsqueda PTR\n", FILE_APPEND | LOCK_EX);
-                $coleccionIp[]=$proceso['ip'];
             }
         endforeach;
         $coleccionIp=array_unique($coleccionIp);
         foreach ($coleccionIp as $ip):
             $ptr=$this->obtenerPtr($ip);
             foreach ($ptr as $proceso):
-                //file_put_contents($this->dhcp['log'], "DEBUG proceso: ".$proceso['nombre']."\n", FILE_APPEND | LOCK_EX);
-                //file_put_contents($this->dhcp['log'], "DEBUG enviado: ".$this->enviado['nombre'].'.'.$this->dhcp['dominio']."\n", FILE_APPEND | LOCK_EX);
+                file_put_contents($this->dhcp['log'], "ProcesoIP: ".$proceso['ip'].", EnviadoIP:". $this->enviado['ip']."\n", FILE_APPEND | LOCK_EX);
+                file_put_contents($this->dhcp['log'], "ProcesoNombre: ".$proceso['nombre'].", EnviadoNombre:". $this->enviado['nombre'].'.'.$this->dhcp['dominio']."\n", FILE_APPEND | LOCK_EX);
                 if($proceso['ip']==$this->enviado['ip']&&$proceso['nombre']==$this->enviado['nombre'].'.'.$this->dhcp['dominio']&&$this->enviado['accion']!='delete'){
                     $ptrExiste=true;
                     file_put_contents($this->dhcp['log'], "No se borra ni se agrega: ".$this->enviado['nombre'].", del registro PTR, no cambió la infomación\n", FILE_APPEND | LOCK_EX);
                 }else{
-                    if(isset($otro)&&$proceso['nombre']!=$otro['nombre'].'.'.$this->dhcp['dominio']){
-                        //file_put_contents($this->dhcp['log'], "DEBUG proceso: ".$proceso['nombre']."\n", FILE_APPEND | LOCK_EX);
-                        //file_put_contents($this->dhcp['log'], "DEBUG otro: ".$otro['nombre'].'.'.$this->dhcp['dominio']."\n", FILE_APPEND | LOCK_EX);
-                        $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
-                    }else{
+                    if(!empty($otro)&&$proceso['nombre']==$otro['nombre'].'.'.$this->dhcp['dominio']){
                         file_put_contents($this->dhcp['log'], "No se borra: ".$proceso['nombre'].", pertenece a otra interface\n", FILE_APPEND | LOCK_EX);
+                    }else{
+                        $this->escribirRegistroPTR('delete',$proceso['nombre'],$proceso['ip']);
                     }
                 }
             endforeach;
@@ -179,11 +178,9 @@ class actualizacion
             $this->query("DELETE FROM dhcp WHERE mac=:mac", array(':mac'=>$this->enviado['mac']));
         }
         file_put_contents($this->dhcp['log'], "------------------".date('Y-m-d H:i:s')." Fin de proceso----------------\n", FILE_APPEND | LOCK_EX);
-
     }
 
     private function escribirRegistroA($accion,$nombre,$ip){
-
         $nombre=explode('.',$nombre,2);
         $texto = "samba-tool dns ".$accion." ".$this->dhcp['servidor'].".".$this->dhcp['dominio']." ".$nombre[1]." ".$nombre[0]." A ".$ip." -k yes";
         file_put_contents($this->dhcp['log'], $texto."\n", FILE_APPEND | LOCK_EX);
@@ -198,7 +195,6 @@ class actualizacion
     }
 
     private function escribirRegistroPTR($accion,$nombre,$ip){
-
         $ip=explode('.',$ip);
         $oct4=$ip[3];
         unset($ip[3]);
@@ -216,11 +212,13 @@ class actualizacion
         }
 
 
-
     }
 }
+
 
 if (!empty($argv[1])){
     $actualizacion = new actualizacion($argv[1]);
     $actualizacion->procesar();
 }
+
+// fin de actualizacionInsertar.php
