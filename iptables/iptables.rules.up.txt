@@ -1,0 +1,223 @@
+*filter
+:FORWARD ACCEPT [0:0]
+:INPUT DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -p tcp -m tcp --tcp-flags ACK ACK -j ACCEPT
+-A INPUT -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -m state --state RELATED -j ACCEPT
+-A INPUT -p udp -m udp --dport 1024:65535 --sport 53 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 3 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 4 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 11 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 12 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+# webmin
+-A INPUT -p tcp -m tcp --dport 10000 -j ACCEPT
+# transmission
+-A INPUT -p tcp -m tcp --dport 9091 -j ACCEPT
+# openVPN
+-A INPUT -p udp -m udp --dport 1222 -j ACCEPT
+-A INPUT ! -i eth1 -j ACCEPT
+COMMIT
+
+
+*mangle
+:PREROUTING ACCEPT [367394415:280759460821]
+:INPUT ACCEPT [322686969:261101399106]
+:FORWARD ACCEPT [44609377:19642373090]
+:OUTPUT ACCEPT [331125875:271489181169]
+:POSTROUTING ACCEPT [375719033:291127817484]
+COMMIT
+
+*nat
+:INPUT ACCEPT [0:0]
+:Https - [0:0]
+:OUTPUT ACCEPT [0:0]
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:Http - [0:0]
+
+# Redes locales
+-A Http -d 10.10.0.0/16 -j RETURN
+# Servidores
+-A Http -s 10.10.10.254/32 -j RETURN
+-A Http -s 10.10.11.254/32 -j RETURN
+-A Http -s 10.10.12.254/32 -j RETURN
+-A Http -s 10.10.13.254/32 -j RETURN
+# Http
+-A Http -p tcp -m tcp -i eth0 --dport 80 -j REDIRECT --to-ports 3128
+
+# Redes locales
+-A Https -d 10.10.0.0/16 -j RETURN
+# Office 365
+-A Https -d 157.56.0.0/16 -j RETURN
+# Servidores
+-A Https -s 10.10.10.254/32 -j RETURN
+-A Https -s 10.10.10.253/32 -j RETURN
+-A Https -s 10.10.10.252/32 -j RETURN
+-A Https -s 10.10.10.251/32 -j RETURN
+-A Https -s 10.10.10.250/32 -j RETURN
+-A Https -s 10.10.10.249/32 -j RETURN
+-A Https -s 10.10.10.248/32 -j RETURN
+-A Https -s 10.10.10.247/32 -j RETURN
+-A Https -s 10.10.10.246/32 -j RETURN
+-A Https -s 10.10.11.254/32 -j RETURN
+-A Https -s 10.10.11.253/32 -j RETURN
+-A Https -s 10.10.11.252/32 -j RETURN
+-A Https -s 10.10.11.251/32 -j RETURN
+-A Https -s 10.10.11.250/32 -j RETURN
+-A Https -s 10.10.11.249/32 -j RETURN
+-A Https -s 10.10.11.248/32 -j RETURN
+-A Https -s 10.10.11.247/32 -j RETURN
+-A Https -s 10.10.11.246/32 -j RETURN
+-A Https -s 10.10.12.254/32 -j RETURN
+-A Https -s 10.10.12.251/32 -j RETURN
+-A Https -s 10.10.13.254/32 -j RETURN
+# jgomez-mp1
+-A Https -s 10.10.12.80/32 -j RETURN
+# jgomez-vpc
+-A Https -s 10.10.12.83/32 -j RETURN
+# jgomez-lp
+-A Https -s 10.10.12.115/32 -j RETURN
+
+
+# jgomez-sp
+-A Https -s 10.10.12.51/32 -j RETURN
+# mloayza-sp
+-A Https -s 10.10.12.53/32 -j RETURN
+# hchavez-sp
+-A Https -s 10.10.12.56/32 -j RETURN
+# egallegos-sp
+-A Https -s 10.10.12.57/32 -j RETURN
+# lesparza-sp
+-A Https -s 10.10.11.67/32 -j RETURN
+# amunoz-sp
+-A Https -s 10.10.11.118/32 -j RETURN
+# dperez-sp
+-A Https -s 10.10.11.69/32 -j RETURN
+# cagreda-sp
+-A Https -s 10.10.11.175/32 -j RETURN
+# kvasquez-sp
+-A Https -s 10.10.11.144/32 -j RETURN
+# jseminario-sp
+-A Https -s 10.10.11.161/32 -j RETURN
+# jlanderer-sp
+-A Https -s 10.10.11.151/32 -j RETURN
+# Https
+-A Https -p tcp -m tcp -i eth0 --dport 443 -j REDIRECT --to-ports 3129
+
+# p2p 1 jgomez
+-A PREROUTING -p tcp -m tcp -d 190.81.53.178/32 --dport 4662 -j DNAT --to-destination 10.10.12.80:4662
+# p2p 2 jgomez
+-A PREROUTING -p udp -m udp -d 190.81.53.178/32 --dport 4665 -j DNAT --to-destination 10.10.12.80:4665
+# p2p 3 jgomez
+-A PREROUTING -p udp -m udp -d 190.81.53.178/32 --dport 4666 -j DNAT --to-destination 10.10.12.80:4666
+# p2p 4 jgomez
+-A PREROUTING -p udp -m udp -d 190.81.53.178/32 --dport 4667 -j DNAT --to-destination 10.10.12.80:4667
+# Transmission Jgomez
+-A PREROUTING -p tcp -m tcp -d 190.81.53.178/32 --dport 9091 -j DNAT --to-destination 10.10.12.80:9091
+# 2x Publish
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 80 -j DNAT --to-destination 10.10.10.248:80
+# Base de datos de prueba
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 1521 -j DNAT --to-destination 10.10.11.248:1521
+# 2x RDP
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 3389 -j DNAT --to-destination 10.10.10.248:3389
+# Camara reducto 1
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 85 -j DNAT --to-destination 10.10.11.215:85
+# Camara Reducto 2
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 9600 -j DNAT --to-destination 10.10.11.215:9600
+# Camara La Mar 1
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 1025 -j DNAT --to-destination 10.10.10.215:1025
+# Camara La Mar 2
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 1027 -j DNAT --to-destination 10.10.10.215:1027
+# Camara Cusco 1
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 1030 -j DNAT --to-destination 10.10.12.215:1030
+# Camara Cusco 2
+-A PREROUTING -p tcp -m tcp -d 190.81.53.179/32 --dport 1035 -j DNAT --to-destination 10.10.12.215:1035
+# vipacas ssh
+-A PREROUTING -p tcp -m tcp -d 190.81.53.180/32 --dport 22 -j DNAT --to-destination 10.10.10.249:22
+# vipacas http
+-A PREROUTING -p tcp -m tcp -d 190.81.53.180/32 --dport 80 -j DNAT --to-destination 10.10.10.249:80
+# vipacas onsite ssh
+-A PREROUTING -p tcp -m tcp -d 190.81.53.181/32 --dport 22 -j DNAT --to-destination 10.10.10.247:22
+# vipacas onsite Azure
+-A PREROUTING -p tcp -m tcp -d 190.81.53.181/32 --dport 2082 -j DNAT --to-destination 10.10.10.247:2082
+# vipacas onsite RDP
+-A PREROUTING -p tcp -m tcp -d 190.81.53.181/32 --dport 3389 -j DNAT --to-destination 10.10.10.247:3389
+-A PREROUTING -j Http
+-A PREROUTING -j Https
+
+
+# Nat loolback
+-A POSTROUTING -s 10.10.0.0/16 -d 10.10.10.249/32 -j SNAT --to-source 10.10.10.1
+# Ping
+-A POSTROUTING -p icmp -o eth1 -j MASQUERADE
+# Red Local
+-A POSTROUTING -s 10.10.0.0/16 ! -o eth1 -j MASQUERADE
+# grayline http
+-A POSTROUTING -p tcp -m tcp -s 10.10.0.0/16 -d 74.220.215.86/32 -o eth1 -j MASQUERADE
+# grayline smtp
+-A POSTROUTING -p tcp -m tcp -d 64.26.60.216/32 -o eth1 --dport 25 -j MASQUERADE
+# grayline pop
+-A POSTROUTING -p tcp -m tcp -d 64.26.60.216/32 -o eth1 --dport 110 -j MASQUERADE
+# Apotur smtp
+-A POSTROUTING -p tcp -m tcp -d 209.45.69.102/32 -o eth1 --dport 25 -j MASQUERADE
+# Apotur pop3
+-A POSTROUTING -p tcp -m tcp -d 209.45.69.102/32 -o eth1 --dport 110 -j MASQUERADE
+# Nisira
+-A POSTROUTING -p tcp -m tcp -d 181.65.246.235/32 -o eth1 -j MASQUERADE
+# SSH
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 22 -j MASQUERADE
+# Https
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 443 -j MASQUERADE
+# GPS KenteSat 1
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 843 -j MASQUERADE
+# Peruvian 1
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 1001 -j MASQUERADE
+# Aerodiana
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 1433 -j MASQUERADE
+# XRay
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 1494 -j MASQUERADE
+# Remote desktop
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 3389 -j MASQUERADE
+# Peruvian 2
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 4198:4215 -j MASQUERADE
+# Peruvian 3
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 5000 -j MASQUERADE
+# Google Talk
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 5222 -j MASQUERADE
+# GPS KenteSat 2
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 6000 -j MASQUERADE
+# EsSalud
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 7777 -j MASQUERADE
+# keyserver Linux
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 11371 -j MASQUERADE
+# kiu
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 51615 -j MASQUERADE
+
+# Servidores
+-A POSTROUTING -s 10.10.10.254/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.10.249/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.10.248/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.11.254/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.11.249/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.11.246/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.12.254/32 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.10.13.254/32 -o eth1 -j MASQUERADE
+# POS
+-A POSTROUTING -s 10.10.10.223/32 -o eth1 -j MASQUERADE
+# Toll Free
+-A POSTROUTING -s 10.10.10.227/32 -o eth1 -j MASQUERADE
+# jgomez-mp1
+-A POSTROUTING -s 10.10.12.80/32 -o eth1 -j MASQUERADE
+# jgomez-vpc1
+-A POSTROUTING -s 10.10.12.83/32 -o eth1 -j MASQUERADE
+# jgomez-sp
+-A POSTROUTING -s 10.10.12.51/32 -o eth1 -j MASQUERADE
+# jgomez-mbp
+-A POSTROUTING -s 10.10.12.115/32 -o eth1 -j MASQUERADE
+# Marketing
+-A POSTROUTING -s 10.10.10.62/32 -o eth1 -j MASQUERADE
+
+COMMIT
