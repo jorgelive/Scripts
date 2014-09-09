@@ -88,6 +88,10 @@ COMMIT
 -A Https -s 10.10.12.53/32 -j RETURN
 # hchavez-sp
 -A Https -s 10.10.12.56/32 -j RETURN
+# gpadovani-sp
+-A Https -s 10.10.12.36/32 -j RETURN
+# pflores-sp
+-A Https -s 10.10.12.116/32 -j RETURN
 # egallegos-sp
 -A Https -s 10.10.12.57/32 -j RETURN
 # lesparza-sp

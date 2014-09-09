@@ -56,7 +56,7 @@ class ResumenForYear
             $fecha = date('d/m/Y',$fechaFormat);
 			$fecharetorno=$fecha;
 		}
-        $trenes[0]=array('601P','304P','83P','504P');
+        $trenes[0]=array('601O','304O','83O','504O');
         $trenes[1]=array('31P','32P','33P','34P');
 
         $fechaCorte=strtotime('31-03-2015');
