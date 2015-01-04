@@ -2,18 +2,18 @@
 $archivo = "fperurail2015.csv";
 
 function trenes($tipo){
-    $valor['31P']='AV31';
-    $valor['203P']='AV203';
-    $valor['32P']='AV32';
-    $valor['604P']='AV604';
-    $valor['33P']='EX33';
-    $valor['34P']='EX34';
-    $valor['601O']='AV601';
-    $valor['501O']='AV501';
-    $valor['301O']='AV301';
-    $valor['304O']='AV304';
-    $valor['604O']='AV604';
-    $valor['6060']='AV606';
+    $valor['31P']='AV31';//ok
+    $valor['203P']='AV203';//ok
+    $valor['32P']='AV32';//ok
+    $valor['604P']='AV604';//ok
+    $valor['33P']='EX33';//ok
+    $valor['34P']='EX34';//ok
+    $valor['601O']='AV601';//ok
+    $valor['501O']='AV501';//ok
+    $valor['301O']='AV301';//ok
+    $valor['304O']='AV304';//ok
+    $valor['604O']='AV604';//ok
+    $valor['606O']='AV606';//ok
     $valor['83O']='EX83';
     $valor['504O']='EX504';
     return $valor[$tipo];
@@ -31,7 +31,7 @@ function estaciones($tipo){
     $valor['301O']='VSIOL';
     $valor['304O']='VSIOL';
     $valor['604O']='VSIOL';
-    $valor['6060']='VSIOL';
+    $valor['606O']='VSIOL';
     $valor['83O']='VSIOL';
     $valor['504O']='VSIOL';
     return $valor[$tipo];
@@ -109,7 +109,7 @@ foreach($newItems as $itemxcodigo):
         $correlativochar=str_pad($correlativo,7, 0, STR_PAD_LEFT); 
         $correlativo++;
         if(!isset($item['numeroGuia'])){$item['numeroGuia']=0;}
-        echo 'INSERT INTO BLOQUEO_TREN (NUM_BLOQUEO,ANO,FEC_SALIDA,COD_SERVICIO_SALIDA, COD_ESTACION_SALIDA,FEC_RETORNO,COD_SERVICIO_RETORNO,COD_ESTACION_RETORNO,CANTIDAD,SALDO_CANTIDAD,CANTIDAD_GUIA,SALDO_CANTIDAD_GUIA,OBSERVACIONES,ESTADO,USER_CREACION,FEC_CREACION)';
+        echo 'INSERT INTO BLOQUEO_TREN (NUM_BLOQUEO,ANO,FEC_SALIDA,COD_SERVICIO_SALIDA, COD_ESTACION_SALIDA,FEC_RETORNO,COD_SERVICIO_RETORNO,COD_ESTACION_RETORNO,CANTIDAD,SALDO_CANTIDAD,CANTIDAD_GUIA,SALDO_CANTIDAD_GUIA,OBSERVACIONES,ESTADO,USER_CREACION,FEC_CREACION) ';
         echo "VALUES ('".$correlativochar."','2015',to_date('".$item['fechaIda']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fechaRetorno']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numeroPaxIda'].",".$item['numeroPaxIda'].",".$item['numeroGuia'].",".$item['numeroGuia'].",'".$item['codigo']." - ".$item['nombre']."',1,'JGOMEZ',to_date('".date('Y/m/d')."', 'yyyy/mm/dd'));<br />";
     endforeach;
 endforeach;

@@ -1,6 +1,6 @@
 <?php 
-$correlativo=3222;
-$dias=275;
+$correlativo=5590;
+$dias=111;
 
 
 function trenes($tipo){
@@ -36,12 +36,12 @@ function printSQL($correlativo,$dias,$numero,$numeroGuia,$trenIda,$trenRetorno){
 		$item['trenRetorno']=trenes($trenRetorno);
 		$item['estacionRetorno']=estaciones($trenRetorno);
 		
-		$item['fechaIda'] = date("d/m/Y", strtotime("2013-04-01+".$i."day"));
+		$item['fechaIda'] = date("d/m/Y", strtotime("2014-09-12+".$i."day"));
 		$item['fechaRetorno'] = $item['fechaIda'];
 		$correlativochar=str_pad($correlativo,7, 0, STR_PAD_LEFT); 
 	
-		echo 'INSERT INTO BLOQUEO_TREN (NUM_BLOQUEO,ANO,FEC_SALIDA,COD_SERVICIO_SALIDA, COD_ESTACION_SALIDA,FEC_RETORNO,COD_SERVICIO_RETORNO,COD_ESTACION_RETORNO,CANTIDAD,SALDO_CANTIDAD,CANTIDAD_GUIA,SALDO_CANTIDAD_GUIA,OBSERVACIONES,ESTADO,USER_CREACION,FEC_CREACION)';
-			echo "VALUES ('".$correlativochar."','2013',to_date('".$item['fechaIda']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fechaRetorno']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numeroPaxIda'].",".$item['numeroPaxIda'].",".$item['numeroGuia'].",".$item['numeroGuia'].",'Allotment - ".$item['fechaIda']."',1,'JGOMEZ',to_date('".date('Y/m/d')."', 'yyyy/mm/dd'));<br />";
+		echo 'INSERT INTO BLOQUEO_TREN (NUM_BLOQUEO,ANO,FEC_SALIDA,COD_SERVICIO_SALIDA, COD_ESTACION_SALIDA,FEC_RETORNO,COD_SERVICIO_RETORNO,COD_ESTACION_RETORNO,CANTIDAD,SALDO_CANTIDAD,CANTIDAD_GUIA,SALDO_CANTIDAD_GUIA,OBSERVACIONES,ESTADO,USER_CREACION,FEC_CREACION) ';
+			echo "VALUES ('".$correlativochar."','2014',to_date('".$item['fechaIda']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fechaRetorno']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numeroPaxIda'].",".$item['numeroPaxIda'].",".$item['numeroGuia'].",".$item['numeroGuia'].",'Allotment - ".$item['fechaIda']."',1,'JGOMEZ',to_date('".date('Y/m/d')."', 'yyyy/mm/dd'));<br />";
 		$correlativo++;	
 			
 	}

@@ -1,10 +1,12 @@
 <?php
-$archivo = "fincarail2014.csv";
+$archivo = "fincarail2015.csv";
 function trenes($tren){
 	$valor['41']='I41';
 	$valor['43']='I43';
 	$valor['44']='I44';
 	$valor['46']='I46';
+	$valor['61']='I61';
+	$valor['64']='I64';
 	return $valor[$tren];
 }
 
@@ -14,7 +16,6 @@ function estaciones($estacion){
 	return $valor[$estacion];
 }
 $lines = file($archivo);
-//print_r($lines);
 
 foreach ($lines as $key => $line):
 	$item=explode(';',$line);
@@ -35,8 +36,9 @@ foreach ($lines as $key => $line):
 
 	$newitems[$key]['servicioIda']=trim($item[4]);
 	$newitems[$key]['servicioRetorno']=trim($item[9]);
+	$newitems[$key]['destino']=$item[11];
 endforeach;
-$correlativo=4919;
+$correlativo=4122;
 foreach($newitems as $item):
 	//$item['numero']=8;//para separar
 	$correlativochar=str_pad($correlativo,7, 0, STR_PAD_LEFT); 
@@ -45,7 +47,7 @@ foreach($newitems as $item):
 	if(isset($item['numeroguia'])){$numeroguia=$item['numeroguia'];}else{$numeroguia=0;}
 		
 	echo 'INSERT INTO BLOQUEO_TREN (NUM_BLOQUEO,ANO,FEC_SALIDA,COD_SERVICIO_SALIDA, COD_ESTACION_SALIDA,FEC_RETORNO,COD_SERVICIO_RETORNO,COD_ESTACION_RETORNO,CANTIDAD,SALDO_CANTIDAD,CANTIDAD_GUIA,SALDO_CANTIDAD_GUIA,OBSERVACIONES,ESTADO,USER_CREACION,FEC_CREACION)';
-	echo "VALUES ('".$correlativochar."','2014',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numero'].",".$item['numero'].",0,0,'".$item['codigo']." - Inca Rail - ".$item['servicioIda']." / ".$item['servicioRetorno']."',1,'JGOMEZ',to_date('".date('Y-m-d')."', 'yyyy-mm-dd'));<br />";
+	echo " VALUES ('".$correlativochar."','2015',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenIda']."','".$item['estacionIda']."',to_date('".$item['fecha']."', 'dd/mm/yyyy'),'".$item['trenRetorno']."','".$item['estacionRetorno']."',".$item['numero'].",".$item['numero'].",0,0,'".$item['destino'].'-'.$item['codigo']." - IR - ".$item['servicioIda']." / ".$item['servicioRetorno']."',1,'JGOMEZ',to_date('".date('Y-m-d')."', 'yyyy-mm-dd'));<br />";
 
 endforeach;
 
