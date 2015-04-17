@@ -40,6 +40,8 @@ COMMIT
 
 # Redes locales
 -A Http -d 10.10.0.0/16 -j RETURN
+# Visa
+-A Http -d 181.65.158.12/32 -j RETURN
 # Servidores
 -A Http -s 10.10.10.254/32 -j RETURN
 -A Http -s 10.10.10.253/32 -j RETURN
@@ -48,10 +50,19 @@ COMMIT
 -A Http -s 10.10.12.254/32 -j RETURN
 -A Http -s 10.10.12.253/32 -j RETURN
 -A Http -s 10.10.13.254/32 -j RETURN
+
+# jgomez-sp-lm
+-A Http -s 10.10.11.83/32 -j RETURN
+# jgomez-sp-cu
+-A Http -s 10.10.12.51/32 -j RETURN
 # jgomez-mp1
 -A Http -s 10.10.12.80/32 -j RETURN
 # jgomez-v01
 -A Http -s 10.10.12.90/32 -j RETURN
+# jgomez-mbp1
+-A Http -s 10.10.12.115/32 -j RETURN
+# jgomez-mbp2
+-A Http -s 10.10.12.151/32 -j RETURN
 # Http
 -A Http -p tcp -m tcp -i eth0 --dport 80 -j REDIRECT --to-ports 3128
 
@@ -59,24 +70,31 @@ COMMIT
 -A Https -d 10.10.0.0/16 -j RETURN
 # Office 365
 -A Https -d 157.56.0.0/16 -j RETURN
+# Visa
+-A Https -d 181.65.158.12/32 -j RETURN
 # Servidores
 -A Https -s 10.10.10.254/32 -j RETURN
+-A Https -s 10.10.10.253/32 -j RETURN
 -A Https -s 10.10.10.249/32 -j RETURN
 -A Https -s 10.10.10.248/32 -j RETURN
 -A Https -s 10.10.10.246/32 -j RETURN
 -A Https -s 10.10.11.254/32 -j RETURN
+-A Https -s 10.10.11.253/32 -j RETURN
 -A Https -s 10.10.11.250/32 -j RETURN
 -A Https -s 10.10.12.254/32 -j RETURN
+-A Https -s 10.10.12.253/32 -j RETURN
 -A Https -s 10.10.13.254/32 -j RETURN
 # jgomez-mp1
 -A Https -s 10.10.12.80/32 -j RETURN
 # jgomez-v01
 -A Https -s 10.10.12.90/32 -j RETURN
-# jgomez-lp
+# jgomez-mbp1
 -A Https -s 10.10.12.115/32 -j RETURN
+# jgomez-mbp2
+-A Https -s 10.10.12.151/32 -j RETURN
 
 
-# jgomez-sp
+# jgomez-sp-cu
 -A Https -s 10.10.12.51/32 -j RETURN
 # mloayza-sp
 -A Https -s 10.10.12.53/32 -j RETURN
@@ -89,32 +107,28 @@ COMMIT
 # egallegos-sp
 -A Https -s 10.10.12.61/32 -j RETURN
 # lesparza-sp
--A Https -s 10.10.11.67/32 -j RETURN
+-A Https -s 10.10.11.81/32 -j RETURN
 # amunoz-sp
--A Https -s 10.10.11.118/32 -j RETURN
+-A Https -s 10.10.11.172/32 -j RETURN
 # dperez-sp
 -A Https -s 10.10.11.170/32 -j RETURN
 # cagreda-sp
--A Https -s 10.10.11.175/32 -j RETURN
+-A Https -s 10.10.11.75/32 -j RETURN
 # kvasquez-sp
--A Https -s 10.10.11.159/32 -j RETURN
+-A Https -s 10.10.11.132/32 -j RETURN
 # jseminario-sp
 -A Https -s 10.10.11.161/32 -j RETURN
 # jseminario-iphone
 -A Https -s 10.10.10.101/32 -j RETURN
 # jlanderer-sp
 -A Https -s 10.10.11.163/32 -j RETURN
-# achavez-sp cop20
--A Https -s 10.10.11.44/32 -j RETURN
-# temp cop20
--A Https -s 10.10.11.101/32 -j RETURN
-# temp cop20
--A Https -s 10.10.11.133/32 -j RETURN
 # Https
 -A Https -p tcp -m tcp -i eth0 --dport 443 -j REDIRECT --to-ports 3129
 
 # p2p 1 jgomez
 -A PREROUTING -p tcp -m tcp -d 190.81.53.178/32 --dport 80 -j DNAT --to-destination 10.10.11.252:80
+# temp vnc jgomez
+-A PREROUTING -p tcp -m tcp -d 190.81.53.178/32 --dport 5500 -j DNAT --to-destination 10.10.11.85:5500
 # p2p 1 jgomez
 -A PREROUTING -p tcp -m tcp -d 190.81.53.178/32 --dport 4662 -j DNAT --to-destination 10.10.12.80:4662
 # p2p 2 jgomez
@@ -147,6 +161,8 @@ COMMIT
 -A PREROUTING -p tcp -m tcp -d 190.81.53.180/32 --dport 22 -j DNAT --to-destination 10.10.10.249:22
 # vipacas http
 -A PREROUTING -p tcp -m tcp -d 190.81.53.180/32 --dport 80 -j DNAT --to-destination 10.10.10.249:80
+# vipacetc RDP
+-A PREROUTING -p tcp -m tcp -d 190.81.53.180/32 --dport 3389 -j DNAT --to-destination 10.10.11.246:3389
 # vipacdc http
 -A PREROUTING -p tcp -m tcp -d 190.81.53.180/32 --dport 8080 -j DNAT --to-destination 10.10.10.253:8080
 # vipacas onsite ssh
@@ -170,19 +186,27 @@ COMMIT
 # grayline http
 -A POSTROUTING -p tcp -m tcp -s 10.10.0.0/16 -d 74.220.215.86/32 -o eth1 -j MASQUERADE
 # grayline smtp
--A POSTROUTING -p tcp -m tcp -d 64.26.60.216/32 -o eth1 --dport 25 -j MASQUERADE
+#-A POSTROUTING -p tcp -m tcp -d 64.26.60.216/32 -o eth1 --dport 25 -j MASQUERADE
 # grayline pop
--A POSTROUTING -p tcp -m tcp -d 64.26.60.216/32 -o eth1 --dport 110 -j MASQUERADE
+#-A POSTROUTING -p tcp -m tcp -d 64.26.60.216/32 -o eth1 --dport 110 -j MASQUERADE
 # afeet pop
--A POSTROUTING -p tcp -m tcp -d 74.125.131.109/32 -o eth1 --dport 995 -j MASQUERADE
+#-A POSTROUTING -p tcp -m tcp -d 74.125.0.0/16 -o eth1 --dport 995 -j MASQUERADE
 # afeet smtp
--A POSTROUTING -p tcp -m tcp -d 74.125.131.108/32 -o eth1 --dport 587 -j MASQUERADE
+#-A POSTROUTING -p tcp -m tcp -d 74.125.0.0/16 -o eth1 --dport 587 -j MASQUERADE
 # Apotur smtp
--A POSTROUTING -p tcp -m tcp -d 209.45.69.102/32 -o eth1 --dport 25 -j MASQUERADE
+#-A POSTROUTING -p tcp -m tcp -d 161.132.8.104/32 -o eth1 --dport 25 -j MASQUERADE
 # Apotur pop3
--A POSTROUTING -p tcp -m tcp -d 209.45.69.102/32 -o eth1 --dport 110 -j MASQUERADE
+#-A POSTROUTING -p tcp -m tcp -d 161.132.8.104/32 -o eth1 --dport 110 -j MASQUERADE
 # Nisira
 -A POSTROUTING -p tcp -m tcp -d 181.65.246.235/32 -o eth1 -j MASQUERADE
+# pop
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 110 -j MASQUERADE
+# smtp
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 25 -j MASQUERADE
+# pop s
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 995 -j MASQUERADE
+# smtp s
+-A POSTROUTING -p tcp -m tcp -o eth1 --dport 587 -j MASQUERADE
 # SSH
 -A POSTROUTING -p tcp -m tcp -o eth1 --dport 22 -j MASQUERADE
 # Https
@@ -231,7 +255,11 @@ COMMIT
 -A POSTROUTING -s 10.10.12.80/32 -o eth1 -j MASQUERADE
 # jgomez-v01
 -A POSTROUTING -s 10.10.12.90/32 -o eth1 -j MASQUERADE
-# jgomez-sp
+# jgomez-mbp1
+-A POSTROUTING -s 10.10.12.115/32 -o eth1 -j MASQUERADE
+# jgomez-mbp2
+-A POSTROUTING -s 10.10.12.151/32 -o eth1 -j MASQUERADE
+# jgomez-sp-cu
 -A POSTROUTING -s 10.10.12.51/32 -o eth1 -j MASQUERADE
 # jgomez-mbp
 -A POSTROUTING -s 10.10.12.115/32 -o eth1 -j MASQUERADE
@@ -239,18 +267,5 @@ COMMIT
 -A POSTROUTING -s 10.10.10.62/32 -o eth1 -j MASQUERADE
 # sistemas-pc
 -A POSTROUTING -s 10.10.11.71/32 -o eth1 -j MASQUERADE
-
-# Temp1
--A POSTROUTING -s 10.10.11.160/32 -o eth1 -j MASQUERADE
-# Temp2
--A POSTROUTING -s 10.10.11.127/32 -o eth1 -j MASQUERADE
-# Temp2
--A POSTROUTING -s 10.10.11.194/32 -o eth1 -j MASQUERADE
-# Temp3
--A POSTROUTING -s 10.10.11.178/32 -o eth1 -j MASQUERADE
-# Temp4
--A POSTROUTING -s 10.10.11.190/32 -o eth1 -j MASQUERADE
-# Temp5
--A POSTROUTING -s 10.10.11.114/32 -o eth1 -j MASQUERADE
 
 COMMIT
