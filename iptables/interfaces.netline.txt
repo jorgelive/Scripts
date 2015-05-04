@@ -1,0 +1,41 @@
+# The loopback network interface
+#190.107.181.106 => 190.107.181.106
+auto lo eth0 eth1 eth1:1 eth1:2 eth1:3
+iface lo inet loopback
+
+# The primary network interface
+iface eth0 inet static
+        address 10.10.10.1
+        netmask 255.255.255.0
+        network 10.10.10.0
+        broadcast 10.10.10.255
+        dns-nameservers 10.10.10.254
+        dns-search vipac.com
+        post-up iptables-restore < /etc/iptables.up.rules
+        up ip route add 10.10.0.0/16 via 10.10.10.2
+        # dns-* options are implemented by the resolvconf package, if installed
+
+iface eth1 inet static
+        address 190.107.181.106
+        netmask 255.255.255.248
+        broadcast 190.107.181.111
+        network 190.107.181.104
+        gateway 190.107.181.105
+
+iface eth1:1 inet static
+        address 190.107.181.107
+        netmask 255.255.255.248
+        broadcast 190.107.181.111
+        network 190.107.181.104
+
+iface eth1:2 inet static
+        address 190.107.181.108
+        netmask 255.255.255.248
+        broadcast 190.107.181.111
+        network 190.107.181.104
+
+iface eth1:3 inet static
+        address 190.107.181.109
+        netmask 255.255.255.248
+        broadcast 190.107.181.111
+        network 190.107.181.104
