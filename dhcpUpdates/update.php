@@ -9,11 +9,16 @@ class Configuracion
         return self::$confArray[$nombre];
     }
 
-    public static function escribir($nombre, $valor)
+    public static function escribir($nombre, $valor, $subValor = null)
     {
-        self::$confArray[$nombre] = $valor;
+        if(!empty($subValor)){
+            self::$confArray[$nombre][$valor] = $subValor;
+        }else{
+            self::$confArray[$nombre] = $valor;
+        }
     }
 }
+
 
 Configuracion::escribir('conexion.servidor', 'wpad.vipac.com');
 Configuracion::escribir('conexion.base', 'infraestructura');
@@ -21,8 +26,9 @@ Configuracion::escribir('conexion.usuario', 'vipacuser');
 Configuracion::escribir('conexion.contra', 'welcom3');
 //Configuracion::escribir('dhcp.log', '/Volumes/Archivo/Desarrollo/Web/Scripts/dhcpUpdates/actualizacionLog.log');
 Configuracion::escribir('dhcp.log', '/etc/dhcp/actualizacionDHCP.log');
-Configuracion::escribir('dhcp.servidor', 'vipacfs3');
+Configuracion::escribir('dhcp.servidor', 'vipacfs');
 Configuracion::escribir('dhcp.dominio', 'vipac.com');
+Configuracion::escribir('otros.nombreFijo', '28:92:4a:15:d7:70', 'ApRe01');
 
 class actualizacion
 {
@@ -32,10 +38,15 @@ class actualizacion
 
     function __construct($enviado)
     {
+        $nombreFijo = Configuracion::leer('otros.nombreFijo');
         $enviado=explode('|', $enviado);
         $this->enviado['accion']=$enviado[0];
         $this->enviado['ip']=$enviado[1];
-        $this->enviado['nombre']=preg_replace('/\s+/', '', $enviado[2]);
+        if (array_key_exists($enviado[3], $nombreFijo)){
+            $this->enviado['nombre'] = $nombreFijo[$enviado[3]];
+        }else{
+            $this->enviado['nombre']=preg_replace('/\s+/', '', $enviado[2]);
+        }
         $macArray=explode(':',$enviado[3]);
         $macProcesado=array();
         foreach ($macArray as $macComponente):
@@ -221,4 +232,3 @@ if (!empty($argv[1])){
     $actualizacion->procesar();
 }
 
-// fin de actualizacionInsertar.php
