@@ -59,7 +59,7 @@ class ResumenForYear
         $trenes[0]=array('601O','304O','83O','504O');
         $trenes[1]=array('31P','32P','33P','34P');
 
-        $fechaCorte=strtotime('31-03-2015');
+        $fechaCorte=strtotime('20-03-2015');
         if($fechaFormat<=$fechaCorte){
             $periodo=0;
         }else{
